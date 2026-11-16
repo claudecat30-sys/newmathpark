@@ -16,6 +16,9 @@
     LETTERS: '大寫字母串逐一讀', DEC: '小數讀 point，逐位讀', BIGNUM: '一萬以上的數分段讀', NUMWORDS: '整句是英文數字單字', RANGE: '範圍 1–5 讀 to', DATE: '日期 3/5 讀 March 5th',
     PLNUM: '5s 讀 fives', ICON: '圖示讀出物品名稱', PROB: 'P(紅球) 讀 the probability of red', QMARK: '開頭的 ? 讀 the question mark', ARROW: '→ 讀 then', BLANK: '○ 讀 blank',
     CMPLIST: '>, <, = 並列時讀 greater than, less than, or equal to', GT: '> 讀 is greater than', LT: '< 讀 is less than', MARKS: '✔ ✘ ⟲ ⟳ 讀成按鈕名稱',
+    OUTOF: '0 / 6 讀 0 out of 6', ROOT: '√ 讀 the square root of', PI: 'π 讀 pi', CMP2: '≤ ≥ ≠ ≈ 讀 is less than or equal to 等', SIGN: '單獨的 > < 讀 the greater-than sign / the less-than sign',
+    SHAPES: '△ □ ○ 在圖形規律裡讀 triangle / square / circle', TRI: '△ABC 讀 triangle A B C', GEO: '≅ ~ ⊥ ∥ ∝ 讀 is congruent to / is similar to / is perpendicular to / is parallel to / is proportional to',
+    POW: '上標指數讀 to the power of', SUB: '下標 a₁ 讀 a 1', PM: '± 讀 plus or minus', PER: 'km/h 讀 kilometers per hour', DECOR: '標題與按鈕前的裝飾圖示不讀', RUN: '連續重複的圖示讀成「數量＋名稱」', STEP: '①②③ 讀 number 1, number 2',
   };
   const ONES = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
   const TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
@@ -26,8 +29,14 @@
     '👕': ['T-shirt', 'T-shirts'], '🎁': ['gift', 'gifts'], '👟': ['shoe', 'shoes'], '🍎': ['apple', 'apples'], '🍓': ['strawberry', 'strawberries'], '🍊': ['orange', 'oranges'], '🍑': ['peach', 'peaches'], '🍐': ['pear', 'pears'],
     '🍌': ['banana', 'bananas'], '🍇': ['bunch of grapes', 'grapes'], '🍉': ['watermelon', 'watermelons'], '🍬': ['sweet', 'sweets'], '🥚': ['egg', 'eggs'], '🖍': ['crayon', 'crayons'], '🎈': ['balloon', 'balloons'],
     '⚽': ['football', 'footballs'], '🏀': ['basketball', 'basketballs'], '🚲': ['bicycle', 'bicycles'], '🎒': ['backpack', 'backpacks'], '🥁': ['drum', 'drums'], '🛒': ['toy cart', 'toy carts'], '📦': ['box', 'boxes'],
-    '🐶': ['puppy', 'puppies'], '🐱': ['kitten', 'kittens'], '🐼': ['panda', 'pandas'], '🐢': ['turtle', 'turtles'], '🐿': ['squirrel', 'squirrels'], '🦊': ['fox', 'foxes'], '🐵': ['monkey', 'monkeys'], '🐻': ['bear', 'bears'],
-    '🐸': ['frog', 'frogs'], '🐰': ['bunny', 'bunnies'], '🐷': ['piglet', 'piglets'], '🏆': ['trophy', 'trophies'], '🗝': ['key', 'keys'], '🪙': ['coin', 'coins'], '👑': ['crown', 'crowns'], '🔺': ['triangle', 'triangles'] };
+    '🐶': ['dog', 'dogs'], '🐱': ['cat', 'cats'], '🐼': ['panda', 'pandas'], '🐢': ['turtle', 'turtles'], '🐿': ['squirrel', 'squirrels'], '🦊': ['fox', 'foxes'], '🐵': ['monkey', 'monkeys'], '🐻': ['bear', 'bears'],
+    '🐸': ['frog', 'frogs'], '🐰': ['bunny', 'bunnies'], '🐷': ['piglet', 'piglets'], '🏆': ['trophy', 'trophies'], '🗝': ['key', 'keys'], '🪙': ['coin', 'coins'], '👑': ['crown', 'crowns'], '🔺': ['triangle', 'triangles'],
+    '🐟': ['fish', 'fish'], '🚗': ['car', 'cars'], '🚌': ['bus', 'buses'], '🥕': ['carrot', 'carrots'], '🦴': ['bone', 'bones'], '✏': ['pencil', 'pencils'], '🚄': ['train', 'trains'], '✈': ['plane', 'planes'],
+    '🐘': ['elephant', 'elephants'], '🥫': ['can', 'cans'], '🎲': ['dice', 'dice'], '🧊': ['ice cube', 'ice cubes'], '🟥': ['red square', 'red squares'], '🟦': ['blue square', 'blue squares'], '🟨': ['yellow square', 'yellow squares'], '🔷': ['blue diamond', 'blue diamonds'],
+    '❓': ['question mark', 'question marks'], '🔟': ['ten-dollar coin', 'ten-dollar coins'], '①': ['one-dollar coin', 'one-dollar coins'] };
+  // 只是裝飾、不讀出來的圖示（標題、按鈕、提示前面的小圖）
+  const DECOR = /[📊📖🤔📘🧪📕📈▶🔁✅❌💡🧠🎮🎬◀⏰🖨💰⏸🎉⏭💪🗑⏹🧩🕹📝⏱🚏⬆☰]\uFE0F?\s*(?=[A-Z0-9"])/gu;
+  const SUPD = '⁰¹²³⁴⁵⁶⁷⁸⁹', SUBD = '₀₁₂₃₄₅₆₇₈₉';
   const COLOR = { '🔴': 'red', '🔵': 'blue', '🟡': 'yellow', '🟢': 'green' };
   const FOOD = new Set(['🍎', '🍓', '🍊', '🍑', '🍐', '🍌', '🍇', '🍉', '🍬', '🍪', '🍩']);
   const M = (kind, a, b) => '\u0001' + kind + ':' + a + (b != null ? ':' + b : '') + '\u0002';   // 內部標記
@@ -47,6 +56,59 @@
     const rules = new Set(), flags = new Set(); const R = r => rules.add(r);
     let s = String(text).replace(/️/g, '').replace(/\bml\b/g, 'mL');
     s = s.replace(/"?✔"?/g, () => { R('MARKS'); return 'the check mark'; }).replace(/"?✘"?/g, () => { R('MARKS'); return 'the cross'; }).replace(/"?⟲"?/g, () => { R('MARKS'); return 'the turn-back arrow'; }).replace(/"?⟳"?/g, () => { R('MARKS'); return 'the turn-forward arrow'; });
+    // ---- 課程固定文字才有的寫法（2026-11-13 補）
+    s = s.replace(/（/g, '(').replace(/）/g, ')').replace(/：/g, ': ').replace(/？/g, '?').replace(/\s*·\s*/g, ', ').replace(/([A-Za-z])–(?=[A-Za-z])/g, '$1 ').replace(/\s*[↓←☰]\s*/g, ' ').replace(/\s*→\s*$/, '');
+    s = s.replace(DECOR, () => { R('DECOR'); return ''; });
+    if (/🔟/u.test(s)) s = s.replace(/(🔟|①)\1*(\s*[:,.?!;])?/gu, (m, e, pu) => { const n = m.split(e).length - 1; R('RUN'); R('ICON'); return ' ' + (n > 1 ? n + ' ' + NAME[e][1] : 'the ' + NAME[e][0]) + (pu ? pu.trim() : ' '); }).replace(/(coins?)\s+(?=\d+ one-dollar)/, '$1 and ');
+    s = s.replace(/([①②③④⑤⑥])\s*/g, (m, c) => { R('STEP'); return ', number ' + ('①②③④⑤⑥'.indexOf(c) + 1) + ', '; }).replace(/^\s*,\s*/, '');
+    s = s.replace(/(\p{Extended_Pictographic}|[-])️?(?:\s?\1️?)+(\s*[:,.?!;])?/gu, (m, e, pu) => { if (!NAME[e]) return m; const n = m.split(e).length - 1; R('RUN'); R('ICON'); return ' ' + n + ' ' + NAME[e][1] + (pu ? pu.trim() : ' '); });
+    s = s.replace(/\$\s*\([\s　]*\)/g, () => { R('BLANK'); R('MONEY'); return ' blank dollars'; }).replace(/\([\s　]*\)/g, () => { R('BLANK'); return ' blank '; }).replace(/[?]\s*%/g, () => { R('PCT'); return 'what percent'; });
+    s = s.replace(/(\d)\s+\/\s+(?=\d)/g, (m, a) => { R('OUTOF'); return a + ' out of '; }).replace(/\bkm\/h\b/g, () => { R('PER'); return 'kilometers per hour'; }).replace(/\bm\/s\b/g, () => { R('PER'); return 'meters per second'; }).replace(/\bm\/min\b/g, () => { R('PER'); return 'meters per minute'; });
+    s = s.replace(/\bpi\s*\(π\)/g, 'pi').replace(/(\d)\s*π/g, (m, a) => { R('PI'); return a + ' pi '; }).replace(/π/g, () => { R('PI'); return ' pi '; });
+    s = s.replace(/√\s*\(([^()]+)\)/g, (m, x) => { R('ROOT'); return ' the square root of the quantity ' + x + ', '; }).replace(/√\s*(\d+(?:\.\d+)?|[a-z])/g, (m, x) => { R('ROOT'); return ' the square root of ' + x; });
+    s = s.replace(/\s*≤\s*/g, () => { R('CMP2'); return ' is less than or equal to '; }).replace(/\s*≥\s*/g, () => { R('CMP2'); return ' is greater than or equal to '; }).replace(/\s*≠\s*/g, () => { R('CMP2'); return ' is not equal to '; }).replace(/\s*≈\s*/g, () => { R('CMP2'); return ' is approximately '; });
+    s = s.replace(/△\s*(?=[A-Z]{3}\b)/g, () => { R('TRI'); return 'triangle '; });
+    if (/[△□]/.test(s) && !/\d\s*□|□\s*=/.test(s)) { R('SHAPES'); s = s.replace(/△/g, ' triangle, ').replace(/□/g, ' square, ').replace(/○/g, ' circle, ').replace(/,\s*([:.?!])/g, '$1').replace(/,\s+(repeats|is|comes)/g, ' $1'); }
+    s = s.replace(/\s*≅\s*/g, () => { R('GEO'); return ' is congruent to '; }).replace(/([A-Z])\s*~\s*(?=[A-Zt])/g, (m, a) => { R('GEO'); return a + ' is similar to '; }).replace(/\s*⊥\s*/g, () => { R('GEO'); return ' is perpendicular to '; }).replace(/\s*∥\s*/g, () => { R('GEO'); return ' is parallel to '; }).replace(/([A-Z])\s*\/\/\s*(?=[A-Z])/g, (m, a) => { R('GEO'); return a + ' is parallel to '; }).replace(/\s*∝\s*/g, () => { R('GEO'); return ' is proportional to '; }).replace(/([A-Z])↔(?=[A-Z])/g, (m, a) => { R('GEO'); return a + ' matches '; });
+    s = s.replace(/([A-Za-z0-9)])(⁻?)([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, (m, a, neg, d) => { if (!neg && (d === '²' || d === '³')) return m; R('POW'); return a + ' to the power of ' + (neg ? 'negative ' : '') + [...d].map(c => SUPD.indexOf(c)).join('') + ' '; }).replace(/([A-Za-z0-9)])ⁿ/g, (m, a) => { R('POW'); return a + ' to the power of n '; });
+    s = s.replace(/([A-Za-z])([₀₁₂₃₄₅₆₇₈₉]+)/g, (m, a, d) => { R('SUB'); return a + ' ' + [...d].map(c => SUBD.indexOf(c)).join('') + ' '; }).replace(/([A-Za-z])ₙ/g, (m, a) => { R('SUB'); return a + ' n '; });
+    s = s.replace(/\s*±\s*/g, () => { R('PM'); return ' plus-or-minus '; });
+    s = s.replace(/\ba ✓/g, () => { R('MARKS'); return 'a check mark'; }).replace(/\s*✓/g, '').replace(/\b(the|The)\s*▼/g, (m, a) => { R('MARKS'); return a + ' arrow'; }).replace(/^\s*▼/, () => { R('MARKS'); return 'The arrow'; }).replace(/▼/g, () => { R('MARKS'); return ' the arrow '; });
+    s = s.replace(/(\d|\b[a-z]\b|\))\s*<\s*(?=\d|−|\(|[a-z]\b| the square)/g, (m, a) => { R('LT'); return a + ' is less than '; }).replace(/(\d|\b[a-z]\b|\))\s*>\s*(?=\d|−|\(|[a-z]\b| the square)/g, (m, a) => { R('GT'); return a + ' is greater than '; });
+    s = s.replace(/\$\s*(\d+)\s+(notes?|coins?|bills?)\b/g, (m, n, w) => { R('MONEY'); return n + ' dollar ' + w; });
+    if (!/>\s*,\s*<\s*(,|or)\s*=/.test(s)) s = s.replace(/(^|\s)>(?=\s|[?.,;:]|$)/g, (m, a) => { R('SIGN'); return a + 'the greater-than sign'; }).replace(/(^|\s)<(?=\s|[?.,;:]|$)/g, (m, a) => { R('SIGN'); return a + 'the less-than sign'; });
+    // ---- \u4f8b\u5916\u6e05\u55ae\u7b2c\u4e09\u6279\uff1a\u5b57\u6bcd\u6307\u6578\u3001\u76f4\u5f0f\u7684\u6a6b\u7dda\u3001\u7528 | \u5206\u9694\u7684\u6578\u5b57\u3001\u7b2c\u4e8c\u8f1b\u8eca
+    { const SUPL = { '\u1d50': 'm', '\u207f': 'n', '\u207a': 'plus', '\u207b': 'minus', '\u02e3': 'times' };
+      s = s.replace(/([A-Za-z0-9)])([\u1d50\u207f\u207a\u207b\u02e3]{2,}|\u1d50)(?![\u2070\u00b9\u00b2\u00b3\u2074\u2075\u2076\u2077\u2078\u2079])/g, (m, a, x) => { R('POW'); return a + ' to the power of ' + [...x].map(c => SUPL[c]).join(' ') + ' '; }); }
+    s = s.replace(/\s*\u2500{3,}\s*/g, () => { R('EQ'); return ' equals '; }).replace(/(\d)\s+\|\s+(?=\d)/g, '$1, ').replace(/\ud83d\ude99/gu, () => { R('ICON'); return ' the second car '; });
+    // ---- \u4f8b\u5916\u6e05\u55ae\u7b2c\u4e8c\u6279\uff082026-11-13\uff09\uff1a\u8ca0\u6578\u62ec\u865f\u3001\u65b9\u62ec\u865f\u3001\u7acb\u65b9\u3001\u7d55\u5c0d\u503c\u3001\u8a08\u7968\u7b26\u865f\u3001a/b\u3001\u25a1\u3001%\u3001\u53ea\u6709\u904b\u7b97\u7b26\u865f\u7684\u53e5\u5b50\u3001\u624b\u52e2\u8207\u4e26\u6392\u5716\u793a
+    s = s.replace(/\b([fg])\(([^()]+)\)/g, (m, f, x) => { R('FUNC'); return f + ' of ' + x + ' '; });
+    s = s.replace(/(?<![a-z])\(\s*\u2212\s*(\d+(?:\.\d+)?|[a-z])\s*\)(?![\u00b2\u00b3\u2070\u00b9\u2074-\u2079])/g, (m, x) => { R('NEG'); return ' negative ' + x + ' '; });
+    s = s.replace(/\[/g, '(').replace(/\]/g, ')');
+    s = s.replace(/\(([^()]+)\)\s*\u00b3/g, (m, x) => { R('QTY'); R('CUBE'); return ' the quantity ' + x + ', cubed '; });
+    s = s.replace(/\|(\u2212?\d+(?:\.\d+)?|\u2212?[a-z])\|/g, (m, x) => { R('ABS'); return ' the absolute value of ' + x + ' '; });
+    s = s.replace(/\|\|\|\|\//g, () => { R('TALLY'); return ' five tally marks, '; }).replace(/(^|\s)(\|{1,4})(?=\s|$|[.,?])/g, (m, a, b, i, str) => { if (!/\|\||tally marks/.test(str)) return m; R('TALLY'); return a + b.length + (b.length === 1 ? ' tally mark' : ' tally marks'); });
+    s = s.replace(/(blank|\?)\s*\/\s*(?=\d)/g, (m, a) => { R('OVER'); return (a === '?' ? 'what' : 'blank') + ' over '; }).replace(/\b([A-Za-z]+)\/(\d+)\b/g, (m, a, b) => { R('OVER'); return a + ' over ' + b; }).replace(/([a-z])\s+\/\s+(?=[a-z])/g, '$1, ');
+    s = s.replace(/🌙\s*/gu, () => { R('ICON'); return 'night, '; }).replace(/☀️?\s*/gu, () => { R('ICON'); return 'morning, '; });
+    s = s.replace(/\b([A-Za-z]{2,})\/([A-Za-z]{2,})\b/g, '$1 or $2').replace(/\b(\d+|[a-z])\/([a-z])\b/g, (m, a, b) => { R('OVER'); return a + ' over ' + b; }).replace(/\)\s*\/\s*(?=[\da-z])/g, () => { R('OVER'); return ') over '; });
+    s = s.replace(/(\d)\u25a1/g, (m, a) => { R('BOX'); return a + ' to the power of the box'; }).replace(/\u25a1(?=\s*=)/g, () => { R('BOX'); return 'the box '; });
+    s = s.replace(/percentage\s*\(%\)/g, 'percentage').replace(/^\s*%/, 'Percent').replace(/blank\s*%/g, 'blank percent').replace(/%/g, () => { R('PCT'); return ' percent'; });
+    if (!/\d/.test(s) && /[\u00d7\u00f7]/.test(s) && /[\u00d7\u00f7+\u2212]\s*(then|and|or|,)?\s*[\u00d7\u00f7+\u2212=]|[\u00d7\u00f7]\s*[.;,:]|[\u00d7\u00f7]\s*$|\b(for|with|and|then|review|number)\s+[\u00d7\u00f7]/.test(s)) { R('OPNAME'); s = s.replace(/\u00d7/g, ' multiplication ').replace(/\u00f7/g, ' division ').replace(/\+/g, ' addition ').replace(/\u2212/g, ' subtraction ').replace(/=/g, ' equals '); }
+    s = s.replace(/\ud83d\udd90\uFE0F?\s*((?:\u261d\uFE0F?\s*)+)/gu, (m, f) => { const n = (f.match(/\u261d/gu) || []).length; R('ICON'); return ' an open hand and ' + n + (n === 1 ? ' finger' : ' fingers'); }).replace(/\ud83d\udd90\uFE0F?/gu, () => { R('ICON'); return 'an open hand'; }).replace(/\ud83d\udcd8(?=\s+side)/u, 'book');
+    s = s.replace(/([a-z])?\s*((?:(?:\p{Extended_Pictographic}|[\ue000-\uf8ff])\uFE0F?\s?){2,})/gu, (m0, pw, m) => { const es = [...m].filter(c => c !== '\uFE0F' && c !== ' '); if (new Set(es).size < 2 || !es.every(e => NAME[e] || COLOR[e])) return m0; R('ICON'); return (pw ? pw + ':' : '') + ' ' + es.map(e => COLOR[e] ? COLOR[e] + ' circle' : NAME[e][0]).join(', ') + ', '; });
+    s = s.replace(/^\s*(\p{Extended_Pictographic}|[\ue000-\uf8ff])\uFE0F?\s*(?=[A-Za-z0-9])/u, (m, e) => NAME[e] || COLOR[e] ? m : (R('DECOR'), ''));
+    s = s.replace(/([a-z]{2,})\s+(\p{Extended_Pictographic}|[\ue000-\uf8ff])\uFE0F?(?=\s*(?:is\b|are\b|about\b|and\b|[.,;?!]|$))/gu, (m, w, e) => NAME[e] || COLOR[e] ? m : (R('DECOR'), w));
+    if (/(?:\p{Extended_Pictographic}|[\ue000-\uf8ff])\uFE0F?\s?(?:\p{Extended_Pictographic}|[\ue000-\uf8ff])/u.test(s)) flags.add('連續多個不同圖示，需要人工判讀');
+    // 「100s」讀 hundreds、「0.1s」讀 0 point ones（使用者 2026-11-13 同意 5s 讀 fives 這一類全部照錄）
+    s = s.replace(/\b(100|1000)s\b/g, (m, n) => { R('PLNUM'); return n === '100' ? 'hundreds' : 'thousands'; }).replace(/\b(\d+)\.(\d)s\b/g, (m, a, d) => { R('PLNUM'); R('DEC'); const w = ONES[+d]; return a + ' point ' + (w === 'six' ? 'sixes' : w + 's'); });
+    // 「= ? m」「= ? s」：問號後面接單位時讀 how many …（不能只讀 what? 再接一個字母）
+    { const UW = { cm: 'centimeters', km: 'kilometers', kg: 'kilograms', mL: 'milliliters', ml: 'milliliters', mm: 'millimeters', m: 'meters', g: 'grams', L: 'liters', s: 'seconds', min: 'minutes', h: 'hours' };
+      s = s.replace(/=\s*[?]\s*(cm|km|kg|mL|ml|mm|min|m|g|L|s|h)\b(?![a-z²³\/])/g, (m, u) => { R('WHAT'); R('UNIT'); return '= how many ' + UW[u]; });
+      s = s.replace(/=\s*[?]\s*°/g, () => { R('WHAT'); R('DEG'); return '= how many degrees'; });
+      s = s.replace(/=\s*[?]\s+(?=[a-z]{3,})/g, () => { R('WHAT'); return '= how many '; });
+      s = s.replace(/(\d+(?:\.\d+)?)\s*min\b/g, (m, n) => { R('UNIT'); return n + (+n === 1 ? ' minute' : ' minutes'); }).replace(/(\d+(?:\.\d+)?)\s+s\b(?!')/g, (m, n) => { R('UNIT'); return n + (+n === 1 ? ' second' : ' seconds'); }).replace(/(\d+(?:\.\d+)?)\s+h\b/g, (m, n) => { R('UNIT'); return n + (+n === 1 ? ' hour' : ' hours'); }); }
+    // 名詞後面的插圖（a can 🥫、a fan 🪭）：前面已經有名稱，圖示不讀
+    s = s.replace(/(\b(?!the\b|with\b|than\b|more\b|and\b)[a-z]{3,})\s+(?:\p{Extended_Pictographic}|[-])️?(?=\s*([?.,;:)]|$|and\b|all\b|are\b|look\b|into\b|about\b|sha))/gu, (m, w) => { R('DECOR'); return w; });
     // ---- 圖示：當作詞用的讀出名稱，裝飾用的略過
     const E = '(\\p{Extended_Pictographic}|[\\ue000-\\uf8ff])';
     const nm = (e, pl) => { const x = NAME[e]; if (!x) return null; return pl ? x[1] : x[0]; };
@@ -75,12 +137,12 @@
     s = s.replace(/[-]/g, ' ').replace(/[\p{Extended_Pictographic}‍]/gu, ' ').replace(/[，；]/g, m => m === '，' ? ', ' : '; ').replace(/。/g, '. ').replace(/[“”]/g, '"').replace(/\s*[—]\s*/g, ', ').replace(/\s+/g, ' ').trim();
     const raw0 = s;
     // 圖片被去掉後留下的空洞
-    if (/\(\s*\)|(^|[\s(])[+×=÷]\s*[=+;.]|^\s*[×+=]|\b(One|Each|Which|The)\s+\?/.test(s)) flags.add('句中的圖示沒有文字，讀出來不完整');
+    if (/\(\s*\)|(^|[\s(])[+×=÷]\s*[=+;.]|\b(One|Each|Which|The)\s+\?/.test(s)) flags.add('句中的圖示沒有文字，讀出來不完整');
     // 整句是英文數字單字
     if (/^[A-Za-z\- ]+$/.test(s)) { const n = words2num(s); if (n != null && n >= 20 && /(hundred|thousand|million|ty\b|ty-)/i.test(s)) { R('NUMWORDS'); if (n > 9999) R('BIGNUM'); s = n > 9999 ? bigNum(n) : String(n); } }
     s = s.replace(/(\d),(?=\d{3}\b)/g, '$1');
     // 日期（句子明顯在談日期時）
-    if (/\d+\/\d+/.test(s) && /\b(days?|From|Today|date|month|week)\b/i.test(s)) { s = s.replace(/\b(\d{1,2})\/(\d{1,2})\b/g, (m, a, b) => MONTHS[+a] ? (R('DATE'), MONTHS[+a] + ' ' + M('o', +b)) : m); }
+    if (/\d+\/\d+/.test(s) && /\b(days? later|in \d+ days|From \d+\/\d+ to|Today|date|month|week)\b/.test(s)) { s = s.replace(/\b(\d{1,2})\/(\d{1,2})\b/g, (m, a, b) => MONTHS[+a] ? (R('DATE'), MONTHS[+a] + ' ' + M('o', +b)) : m); }
     // 時間
     s = s.replace(/\b(\d{1,2}):(\d{2})\b/g, (m, h, mm) => { R('TIME'); return +mm === 0 ? h + " o'clock" : +mm < 10 ? h + ' ' + M('z', +mm) : h + ' ' + (+mm); });
     // 比
@@ -115,7 +177,7 @@
     s = s.replace(/\s*\(([^()]*)\)/g, (m, x) => (/[+−×÷=]/.test(x) ? m : ', ' + x + ','));
     s = s.replace(/\(([^()]*[+−×÷-][^()]*)\)/g, (m, x) => { R('QTY'); return ' the quantity ' + x + ','; });
     // 負號與減號（頁面有時已把 − 換成 minus）
-    s = s.replace(/(^|[,:=(]\s*|\b(?:times|plus|minus|by|quantity)\s+)(?:−|-|minus\s)\s*(?=[\dA-Za-z(])/g, (m, a) => { R('NEG'); return a + 'negative '; });
+    s = s.replace(/(^|[,:=(]\s*|\b(?:times|plus|minus|by|quantity|and|or|is|are|to|than|of|from|between)\s+)(?:−|-|minus\s)\s*(?=[\dA-Za-z(])/g, (m, a) => { R('NEG'); return a + 'negative '; });
     s = s.replace(/\s*[−]\s*/g, () => { R('MINUS'); return ' minus '; }).replace(/(\d|\))\s+-\s+(?=\d|\()/g, (m, a) => { R('MINUS'); return a + ' minus '; });
     s = s.replace(/\s*\+\s*/g, () => { R('PLUS'); return ' plus '; }).replace(/\s*×\s*/g, () => { R('TIMES'); return ' times '; }).replace(/\s*÷\s*/g, () => { R('DIV'); return ' divided by '; });
     s = s.replace(/\s*=\s*what\?/gi, () => { R('EQ'); R('WHAT'); return ' equals what?'; }).replace(/\s*=\s*/g, () => { R('EQ'); return ' equals '; });
@@ -135,7 +197,7 @@
     // 一萬以上
     s = s.replace(/\b\d{5,}\b/g, m => { R('BIGNUM'); return bigNum(+m); });
     s = s.replace(/…+|\.{3,}/g, () => { R('ELL'); return ', '; });
-    s = s.replace(/\s+,/g, ',').replace(/,\s*,/g, ',').replace(/,\s*([.?!])/g, '$1').replace(/\s+/g, ' ').trim();
+    s = s.replace(/\s+,/g, ',').replace(/,\s*,/g, ',').replace(/,\s*;/g, ';').replace(/,(?=[A-Za-z])/g, ', ').replace(/,\s*([.?!])/g, '$1').replace(/\s+/g, ' ').trim();
     const left = s.replace(/[\u0001\u0002]/g, '').match(/[^A-Za-z0-9\s.,!?;:'"()\-]/g);
     if (left) flags.add('還有規則沒涵蓋的符號：' + [...new Set(left)].join(' '));
     if (!/[A-Za-z0-9]/.test(s.replace(/\u0001[^\u0002]*\u0002/g, '1'))) flags.add('沒有可讀的內容');

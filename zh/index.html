@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-TW" data-zh="zh-TW"><head><link rel="icon" type="image/png" href="../icon.png"><link rel="apple-touch-icon" href="../icon.png">
-<script src="audio/index.js"></script><!-- /frame-runtime --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<script src="audio/index.js" charset="utf-8"></script><!-- /frame-runtime --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>DINO AI 數學遊樂園 · 康軒一到九年級遊戲大全</title><style>:root{--bg:#e8f6e1;--card:#fff;--ink:#22332b;--sub:#5b6f64;--pri:#2f8f5b;--pri2:#e9f7ee;--y:#f4b400;--r:#e0475b;--b:#2f7fd8;--hh:96px}
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -454,7 +454,7 @@ const ABCD='ABCD';
 const hasCJK=s=>/[\u4e00-\u9fff]/.test(s);
 const zhT=s=>LG!=='en'||hasCJK(s);
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
-const stripTags=s=>String(s).replace(/<br\s*\/?>/gi,'。').replace(/<[^>]+>/g,'').replace(/&gt;/g,'>').replace(/&lt;/g,'<').replace(/&amp;/g,'&');
+const stripTags=s=>String(s).replace(/<span style="display:inline-flex;flex-direction:column[^>]*><span>([^<]*)<\/span><span[^>]*>([^<]*)<\/span><\/span>/g,' $1/$2 ').replace(/<br\s*\/?>/gi,'。').replace(/<[^>]+>/g,'').replace(/&gt;/g,'>').replace(/&lt;/g,'<').replace(/&amp;/g,'&');
 const UIEN={'🎮 去玩遊戲 →':'🎮 Play the game →','⏱ 每局 90 秒':'⏱ 90 seconds per game','已玩 ':'Played ',' 局':'','▶ 開始遊戲':'▶ Start game','結束':'End','太厲害了！':'Amazing!','真棒！':'Great job!','繼續加油！':'Keep it up!','⏰ 時間到！':'⏰ Time\'s up!','得分：':'Score: ','新紀錄！':'New record!','🔁 再玩一次':'🔁 Play again','完成':'Done','重來':'Start again','這是一個四邊形，再試試圍出長方形或平行四邊形。':'That is a four-sided shape. Try to make a rectangle or a parallelogram.','三個釘子在一條直線上，圍不成圖形，再試試。':'The three pegs are in a straight line, so they don\'t make a shape. Try again.','🖨 印一印':'🖨 Print','🔎 找一找：':'🔎 Find: ','✅ 找到了！':'✅ Found it!','合起來':'Put together','個位上寫幾？':'What goes in the ones place?','十位上寫幾？':'What goes in the tens place?','個位滿十，向十位進 1！':'The ones reach 10: carry 1 to the tens!','個位不夠減，從十位退 1！':'Not enough ones: borrow 1 from the tens!','再算算個位。':'Check the ones again.','別忘了加上進位的 1。':'Don\'t forget to add the carried 1.','別忘了十位已經退了 1。':'Remember the tens gave away 1.','再算算十位。':'Check the tens again.','點上面一個，再點下面一個連線。':'Tap one on top, then one below, to match them.','付款盤（點錢幣可以拿回）':'Payment tray (tap money to take it back)','已付：':'Paid: ','💰 付錢':'💰 Pay','✅ 買到啦！':'✅ You bought it!','個位：':'Ones: ','老師：':'Teacher: ','小明：':'Ming: ','⏸ 暫停':'⏸ Pause','▶ 播放':'▶ Play','點選下方 ▶ 播放 開始學習':'Tap ▶ Play below to start','這臺裝置不支援語音朗讀，字幕會自動播放':'This device has no speech; captions will play automatically',
 '🎉 這個單元的動畫學完啦！':'🎉 You finished the animation!','下一步：去 <b>🧪 動手玩</b> 親手試一試，再去做測驗。':'Next: try <b>🧪 Hands-on</b>, then take the quiz.','🧪 去動手玩':'🧪 Hands-on','📝 直接測驗':'📝 Quiz now','🔁 從頭再看':'🔁 Watch again',
 '🤔 想一想':'🤔 Think about it','⏭ 略過，繼續學習':'⏭ Skip and continue','✅ 答對了，真棒！':'✅ Correct, great job!','❌ 再想想，正確答案是 ':'❌ Not quite. The answer is ','📘 講解':'📘 Explanation','✅ 完成':'✅ Done','▶ 繼續下一段':'▶ Next part','🔁 重看這一段':'🔁 Watch this part again',
@@ -496,7 +496,7 @@ function spEN(s){s=String(s);
  for(const [a,b] of [['+',' plus '],['=',' equals '],['>',' is greater than '],['<',' is less than '],['×',' times '],['○',' blank '],['( )',' blank '],['(  )',' blank '],['→',', '],['¥',' yuan ']])s=s.split(a).join(b);
  return s.replace(/[^\w\s,.!?;:'%()\-]/g,' ');}
 const conv=s=>zhT(s)?sp(s):spEN(s);
-function plainText(e){if(!e)return'';const c=e.cloneNode(true);c.querySelectorAll('.zb').forEach(x=>x.remove());c.querySelectorAll('img.ph').forEach(x=>x.replaceWith(x.alt));return c.textContent;}
+function plainText(e){if(!e)return'';const c=e.cloneNode(true);c.querySelectorAll('.zb').forEach(x=>x.remove());c.querySelectorAll('span[style*="flex-direction:column"]').forEach(x=>{const k=x.children;if(k.length===2)x.replaceWith(' '+k[0].textContent+'/'+k[1].textContent+' ');});c.querySelectorAll('img.ph').forEach(x=>x.replaceWith(x.alt));return c.textContent;}
 function vis(s){let n=0;for(const c of s)n+=/[\x00-\x7f]/.test(c)?0.55:1;return n;}
 function chunks(s,max=17){
  if(!zhT(s)||!hasCJK(s)&&LG==='en'){const parts=String(s).split(/(?<=[,.!?;:])\s+/).filter(Boolean);const out=[];for(const p of parts){const w=p.split(/\s+/);if(w.length<=10){out.push(p);continue;}for(let i=0;i<w.length;i+=8)out.push(w.slice(i,i+8).join(' '));}
@@ -530,6 +530,7 @@ const _segs=t=>{for(const p of _PRE){if(t.startsWith(p))return [p.trim(),...t.sl
 const _clip=(lang,s)=>{const ix=window.AUDIO_INDEX||{};const t=s.replace(/[。！？]$/,'');const hit=x=>ix[lang+'|'+x]||ix[lang+'|'+x+'。']||ix[lang+'|'+x+'！']||ix[lang+'|'+x+'？'];const f=hit(t)||hit(s);if(f)return f;const m=t.match(/^[A-D][，.、]\s*(.+)$/);return (m&&hit(m[1]))||null};
 
 /* 進階拼接：整句與一般拼接都找不到音檔時，再把數字、小數、中文數字、「兩」、分數拆開來拼 */
+const _paren=(q,s,out)=>{if(!q||!/[()]/.test(q)||!/^[，、；：。！？（）()\s,.;:!?]+$/.test(q)||!/\([^()]*(加|減|乘|除)[^()]*\)/.test(s))return false;const f=_clip('zh','括號');if(!f)return false;for(const c of q)if(c==='('||c===')')out.push({f});return true};
 const _CD='零一二三四五六七八九';
 const _cn2n=s=>{s=s.replace(/兩/g,'二');if(!/^[零一二三四五六七八九十百千萬億]+$/.test(s)||!/[十百千萬億]/.test(s))return null;let t=0,sec=0,n=0;for(const c of s){const d=_CD.indexOf(c);if(d>=0){n=d;continue}if(c==='十'){sec+=(n||1)*10;n=0}else if(c==='百'){sec+=n*100;n=0}else if(c==='千'){sec+=n*1000;n=0}else if(c==='萬'){t+=(sec+n)*1e4;sec=0;n=0}else if(c==='億'){t=(t+sec+n)*1e8;sec=0;n=0}}return t+sec+n};
 const _numClips=n=>{const ix=window.AUDIO_INDEX||{};if(n<=9999){const f=ix['num|'+n];return f?[{f}]:null}const out=[];const add=(x,u)=>{const a=_numClips(x),f=_clip('zh',u);if(!a||!f)return false;out.push(...a,{f});return true};const zero=()=>{const f=_clip('zh','零');if(!f)return false;out.push({f});return true};
@@ -543,7 +544,7 @@ const _comp2=s=>{const out=[];for(const p of s.replace(/["“”「」『』]/g,
  if(p==='兩'||p==='分之'){const f=_clip('zh',p);if(!f)return null;out.push({f});continue}
  const cn=_cn2n(p);if(cn!=null){const a=_numClips(cn);if(!a)return null;out.push(...a);continue}
  if(/^[零一二三四五六七八九十]$/.test(p)){const a=_numClips(p==='十'?10:_CD.indexOf(p));if(!a)return null;out.push(...a);continue}
- const q=p.trim();if(!q||/^[，、；：。！？（）()\s,.;:!?…~～\/-]+$/.test(q))continue;const f=_clip('zh',q);if(!f)return null;out.push({f})}
+ const q=p.trim();if(_paren(q,s,out))continue;if(!q||/^[，、；：。！？（）()\s,.;:!?…~～\/-]+$/.test(q))continue;const f=_clip('zh',q);if(!f)return null;out.push({f})}
  return out.length?out:null};
 function _say(it,u,next){
   const _tx=(typeof ZHV!=='undefined'&&ZHV==='t'&&String(u.lang||'').startsWith('zh')&&typeof fixPron==='function')?fixPron(it.t):it.t;
@@ -565,8 +566,8 @@ const synth={cancel(){_tok++;_busy=false;if(_wsrc){_wsrc.stop();_wsrc=null}if(_a
   get pending(){return false},
   getVoices(){return _nativeSynth?_nativeSynth.getVoices():[]},
   set onvoiceschanged(f){if(_nativeSynth)_nativeSynth.onvoiceschanged=f},
-  speak(u){u={text:mathPrep(String(u.text)).replace(/[\p{Extended_Pictographic}\uFE0F\u200d]/gu,'').replace(/\s+/g,' ').trim(),lang:u.lang,rate:u.rate,pitch:u.pitch,voice:u.voice,onend:u.onend,onerror:u.onerror};const lang=u.lang.startsWith('zh')?'zh':'en';
-    const _comp=(lang,s)=>{const ix=window.AUDIO_INDEX||{};const parts=s.split(/(\d+)/);const out=[];for(const p of parts){if(p==="")continue;if(/^\d+$/.test(p)){const f=ix["num|"+(+p)];if(!f)return null;out.push({f});continue}const q=p.trim();if(!q||/^[，、；：。！？（）()\s,.;:!?]+$/.test(q))continue;const f=_clip(lang,q);if(!f)return null;out.push({f})}return out.length?out:null};
+  speak(u){u={text:mathPrep(String(u.text)).replace(/[\p{Extended_Pictographic}\uFE0F\u200d\ue000-\uf8ff]/gu,'').replace(/\s+/g,' ').trim(),lang:u.lang,rate:u.rate,pitch:u.pitch,voice:u.voice,onend:u.onend,onerror:u.onerror};const lang=u.lang.startsWith('zh')?'zh':'en';
+    const _comp=(lang,s)=>{const ix=window.AUDIO_INDEX||{};const parts=s.split(/(\d+)/);const out=[];for(const p of parts){if(p==="")continue;if(/^\d+$/.test(p)){const f=ix["num|"+(+p)];if(!f)return null;out.push({f});continue}const q=p.trim();if(_paren(q,s,out))continue;if(!q||/^[，、；：。！？（）()\s,.;:!?]+$/.test(q))continue;const f=_clip(lang,q);if(!f)return null;out.push({f})}return out.length?out:null};
 const _mk=s=>{const f=_clip(lang,s);if(f)return [{f}];const c=_comp(lang,s);if(c)return c;return null};const items=_segs(u.text).flatMap(s=>{const r=_mk(s);if(r)return r;const cs=(typeof chunks==='function')?chunks(s,17):[s];if(cs.length>1){const parts=cs.map(p=>_mk(p.trim()));if(parts.every(Boolean))return parts.flat()}if(lang==='zh'){const r2=_comp2(s);if(r2)return r2}return [{t:s}]});
     synth.cancel();_busy=true;u._t0=Date.now();_playQ(items,u,_tok)}};
 const tts={ok:('speechSynthesis' in window)&&typeof SpeechSynthesisUtterance!=='undefined',z1:null,z2:null,e1:null,e2:null,rate:.85,
@@ -585,6 +586,7 @@ const say=(t,who='t',rate)=>{const s=String(t);if(/[一-鿿]/.test(s))return new
 let readTok=0;
 function mathPrep(t) {
   let s = t;
+  s = s.replace(/([=＝×÷+−:：,，、(（]|等於|乘|除以|加|減)\s*[?？](?!\s*[)）]?\s*$)/g, '$1 多少 ').replace(/([=＝]|等於)\s*[?？]\s*$/g, '$1 多少').replace(/[?？](?=\s*[=＝×÷+−%°])/g, ' 多少 ').replace(/(\d)\s+[?？](?=\s*[一-鿿])/g, '$1 多少 ');
   s = s.replace(/\bsin\s*θ/g,'sine theta').replace(/\bcos\s*θ/g,'cosine theta').replace(/\btan\s*θ/g,'tangent theta').replace(/\bsin\b/g,'sine').replace(/\bcos\b/g,'cosine').replace(/\btan\b/g,'tangent').replace(/θ/g,'theta');
   s = s.replace(/(\d{1,2}):00(?!\d)/g,'$1點整').replace(/(\d{1,2}):0(\d)(?!\d)/g,'$1點零$2分').replace(/(\d{1,2}):(\d{2})(?!\d)/g,'$1點$2分');
   s = s.replace(/(\d+) ?: ?(\d{3,})(?!\d)/g, '$1比$2').replace(/(\d+) : (\d+)/g, '$1比$2').replace(/(\d+) : (\d+)/g, '$1比$2');
@@ -2690,7 +2692,7 @@ dec:r=>{const n=ri(r,11,30),t=Math.floor(n/10),o=n%10;const askT=r()<.5;return{s
 read:r=>{const n=ri(r,11,30);return{s:'T20',k:'cp',q:L(`"${CN100(n)}"寫成數字是？`,`Write "${NW2(n)}" in digits.`),...opts(r,n,[(n%10)*10+Math.floor(n/10)||n+1,n+1,n-10]),h:L('先寫十位，再寫個位。','Write the tens first, then the ones.'),e:L(`"${CN100(n)}"寫成 ${n}。`,`"${NW2(n)}" is written ${n}.`),m:L('讀數、寫數都從左邊（十位）開始。','Read and write numbers starting from the tens.')};},
 ord:r=>{const n=ri(r,12,25),k=ri(r,1,4);return{s:'T21',k:'ord',q:L(`小朋友排隊，小明排第 ${n} 個，小華排在小明後面第 ${k} 個，小華排第幾個？`,`Ming is ${n}th in line. Hua is ${k} place${k>1?'s':''} behind Ming. What place is Hua?`),...opts(r,n+k,[n+k-1,n+k+1,n-k]),h:L(`從 ${n} 往後數 ${k} 個。`,`Count on ${k} from ${n}.`),e:L(`從 ${n} 往後數 ${k} 個：${Array.from({length:k},(_,i)=>n+i+1).join('、')}，排第 ${n+k} 個。`,`Count on from ${n}: ${Array.from({length:k},(_,i)=>n+i+1).join(', ')}. Hua is ${n+k}th.`),m:L('"後面第幾個"就是往後數幾個。','"k places behind" means count on k.')};},
 betw:r=>{const a=ri(r,10,26),b=a+ri(r,2,4);return{s:'T21',k:'ord',q:L(`${a} 和 ${b} 中間有幾個數？`,`How many numbers are between ${a} and ${b}?`),...opts(r,b-a-1,[b-a,b-a+1,b-a-2<0?3:b-a-2]),h:L('"中間"不算頭和尾。','"Between" does not include the two ends.'),e:L(`中間的數是 ${Array.from({length:b-a-1},(_,i)=>a+i+1).join('、')}，有 ${b-a-1} 個。`,`The numbers between are ${Array.from({length:b-a-1},(_,i)=>a+i+1).join(', ')}: ${b-a-1}.`),m:L('把中間的數一個一個寫出來再數。','Write the numbers in between and count them.')};},
-cmp:r=>{let a=ri(r,10,30),b=ri(r,10,30);if(a===b)b=a<30?a+1:a-1;const s=a>b?'>':'<';return{s:'T22',k:'cmp',q:L(`${a} ○ ${b}，○ 裡填 > 還是 <？`,`${a} ○ ${b}: does ○ need > or <?`),o:['>','<'],a:s==='>'?0:1,h:L('先比十位，十位一樣再比個位。','Compare tens first; if they match, compare ones.'),e:L(`${a} ${s} ${b}，${Math.floor(a/10)===Math.floor(b/10)?'十位一樣，個位':'十位'}比較大的數比較大。`,`${a} ${s} ${b}: the number with more ${Math.floor(a/10)===Math.floor(b/10)?'ones (the tens are equal)':'tens'} is bigger.`),m:L('">"和"<"的開口朝向大的數，尖尖的一邊指著小的數。','The open side of > or < faces the bigger number; the point faces the smaller.')};},
+cmp:r=>{let a=ri(r,10,30),b=ri(r,10,30);if(a===b)b=a<30?a+1:a-1;const s=a>b?'>':'<';return{s:'T22',k:'cmp',q:L(`${a} ○ ${b}，○ 裡填 > 還是 <？`,`${a} ○ ${b}: does ○ need > or &lt;?`),o:['>','<'],a:s==='>'?0:1,h:L('先比十位，十位一樣再比個位。','Compare tens first; if they match, compare ones.'),e:L(`${a} ${s} ${b}，${Math.floor(a/10)===Math.floor(b/10)?'十位一樣，個位':'十位'}比較大的數比較大。`,`${a} ${s} ${b}: the number with more ${Math.floor(a/10)===Math.floor(b/10)?'ones (the tens are equal)':'tens'} is bigger.`),m:L('">"和"<"的開口朝向大的數，尖尖的一邊指著小的數。','The open side of > or < faces the bigger number; the point faces the smaller.')};},
 most:r=>{const ns=shuf(r,Array.from({length:21},(_,i)=>i+10)).slice(0,4);const big=r()<.5;const v=big?Math.max(...ns):Math.min(...ns);return{s:'T22',k:'cmp',q:big?L('哪一個數最大？','Which number is the biggest?'):L('哪一個數最小？','Which number is the smallest?'),o:ns.map(String),a:ns.indexOf(v),h:L('先比十位，再比個位。','Compare tens, then ones.'),e:L(`${v} ${big?'最大':'最小'}。`,`${v} is the ${big?'biggest':'smallest'}.`),m:L('比較兩位數：十位大的就大；十位一樣，個位大的就大。','Two-digit numbers: more tens is bigger; equal tens, more ones is bigger.')};}
 };
 CH.ka6={title:P('30以內的數','Numbers to 30'),icon:'🪵',formula:'10 + 10 + 10 = 30',
@@ -10964,4 +10966,18 @@ show('park');
   mount();
   new MutationObserver(mount).observe(document.body,{childList:true,subtree:true});
 })();</script>
+<script>
+/*iOS-voice-fix-v2 (Web Audio)*/
+(function(){
+ try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+ const SIL='data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==';let ok=false,el=null;
+ /* 取得頁面播放音檔用的 AudioContext（中文頁 _wctx()，英文頁 ENA.ctx），沒有就先建立 */
+ const ctx=()=>{try{if(typeof _wctx==='function')return _wctx();if(typeof ENA!=='undefined'){const C=window.AudioContext||window.webkitAudioContext;if(!ENA.ctx&&C)ENA.ctx=new C();return ENA.ctx}}catch(e){}return null};
+ const unlock=()=>{const a=ctx();if(a){if(a.state!=='running'){try{a.resume().catch(()=>{})}catch(e){}}try{const b=a.createBuffer(1,1,22050),n=a.createBufferSource();n.buffer=b;n.connect(a.destination);n.start(0)}catch(e){}}
+  if(!ok){try{el=el||new Audio();el.preload='auto';el.setAttribute('playsinline','');el.setAttribute('webkit-playsinline','');el.src=SIL;const p=el.play();if(p&&p.then)p.then(()=>{ok=true},()=>{})}catch(e){}}};
+ ['touchend','pointerup','click','keydown'].forEach(e=>document.addEventListener(e,unlock,true));
+ /* 切回頁面（接電話、切 App 之後）時恢復 */
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden){const a=ctx();if(a&&a.state!=='running'){try{a.resume().catch(()=>{})}catch(e){}}}});
+})();
+</script>
 </body></html>
