@@ -4,6 +4,42 @@
 
 國小到國中數學的遊戲式學習頁面,繁體中文與英文兩個版本,共 440 個單元遊戲。純靜態網頁,語音使用預先錄製的音檔。
 
+## 語言版本
+
+| 版本 | 這個儲存庫 | 位置 |
+|---|---|---|
+| 繁體中文＋英文 | 有 | `zh/index.html`(繁體)、`en/index.html`(英文),頁面上有切換按鈕 |
+| 簡體中文＋英文 | **尚未製作** | 遊樂園目前沒有簡體版。同系列已有簡體＋英文版的是四則運算表與基礎幾何,見下方「相關儲存庫」 |
+
+## 連結
+
+線上預覽(GitHub Pages,不需要 GitHub 帳號):
+
+- 入口(自動轉到繁體版):https://claudecat30-sys.github.io/newmathpark/
+- 繁體中文版:https://claudecat30-sys.github.io/newmathpark/zh/index.html
+- 英文版:https://claudecat30-sys.github.io/newmathpark/en/index.html
+
+下載:
+
+- 儲存庫:https://github.com/claudecat30-sys/newmathpark
+- 整包 ZIP(約 1.6 GB):https://github.com/claudecat30-sys/newmathpark/archive/refs/heads/main.zip
+- 用 git:`git clone https://github.com/claudecat30-sys/newmathpark.git`
+
+其他:
+
+- 製作紀錄:https://github.com/claudecat30-sys/newmathpark/tree/main/docs
+- 更新歷程:https://github.com/claudecat30-sys/newmathpark/commits/main
+
+### 相關儲存庫
+
+同一系列的其他產品,各自獨立,不在這個儲存庫裡。
+
+| 產品 | 語言版本 | 儲存庫 | 線上預覽 |
+|---|---|---|---|
+| 新課綱數學(課程版) | 繁體中文＋英文(簡體中文＋英文尚未製作) | https://github.com/claudecat30-sys/newmath | https://claudecat30-sys.github.io/newmath/ |
+| 四則運算表 | 繁體中文＋英文、簡體中文＋英文 | https://github.com/claudecat30-sys/arithmetic-tables | 繁體 https://claudecat30-sys.github.io/arithmetic-tables/ 、簡體 https://claudecat30-sys.github.io/arithmetic-tables/cn.html |
+| 基礎幾何 | 繁體中文＋英文、簡體中文＋英文 | https://github.com/claudecat30-sys/basic-geometry | 繁體 https://claudecat30-sys.github.io/basic-geometry/ 、簡體 https://claudecat30-sys.github.io/basic-geometry/cn.html |
+
 ## 內容
 
 ```
@@ -83,6 +119,11 @@ docs/               製作過程的紀錄(讀音規則、修正紀錄、錄音�
 7. `docs/` 裡的文件是製作過程的工作紀錄,部分連結指向製作時的本機路徑,在這裡打不開。
 
 ## 更新紀錄
+
+### 2026-11-19
+
+- 兩版頂端列加入全螢幕切換按鈕(`#hFs`,在語言切換按鈕左邊;頁面裡標記為 `fullscreen-toggle-v1`)。瀏覽器不支援全螢幕時(例如 iPhone 的 Safari)按鈕不會出現。尚未在實體平板測試。
+- 說明頁加入語言版本、預覽與下載連結、相關儲存庫。
 
 ### 2026-11-16
 

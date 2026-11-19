@@ -458,6 +458,18 @@ const LANG=document.documentElement.lang||'zh-CN';
 const LG=LANG.startsWith('en')?'en':'zh';
 /* 語言切換按鈕要前往的頁面：上線時依實際網址調整這一行即可 */
 const LANG_SWITCH_URL=LG==='en'?'../zh/index.html':'../en/index.html';
+/*fullscreen-toggle-v1*/
+const FS_OK=(function(){const d=document.documentElement;return !!(d.requestFullscreen||d.webkitRequestFullscreen)&&document.fullscreenEnabled!==false&&document.webkitFullscreenEnabled!==false;})();
+if(FS_OK)document.documentElement.classList.add('fsok');
+function fsOn(){return !!(document.fullscreenElement||document.webkitFullscreenElement);}
+function fsLabel(){return fsOn()?(LG==='en'?'⛶ Exit':'⛶ 還原'):(LG==='en'?'⛶ Full screen':'⛶ 全螢幕');}
+function fsTitle(){return fsOn()?(LG==='en'?'Exit full screen':'離開全螢幕'):(LG==='en'?'Full screen':'切換成全螢幕');}
+function fsPaint(){const b=document.getElementById('hFs')||document.getElementById('fsBtn');if(b){b.textContent=b.id==='fsBtn'?'⛶':fsLabel();b.classList.toggle('fsOn',fsOn());b.title=fsTitle();b.setAttribute('aria-label',fsTitle());}}
+function toggleFS(){try{const d=document.documentElement;
+ if(fsOn())(document.exitFullscreen||document.webkitExitFullscreen).call(document);
+ else{const p=(d.requestFullscreen||d.webkitRequestFullscreen).call(d);if(p&&p.catch)p.catch(function(){});}}catch(e){}}
+['fullscreenchange','webkitfullscreenchange'].forEach(function(ev){document.addEventListener(ev,fsPaint);});
+
 const ZHV=document.documentElement.dataset.zh||'zh-CN';
 let TR=false;
 const isP=v=>v&&typeof v==='object'&&!Array.isArray(v)&&('zh' in v||'en' in v);
@@ -10785,7 +10797,7 @@ const stl=document.createElement('style');stl.textContent=css;document.head.appe
 const hub=document.createElement('div');hub.id='hub';document.body.appendChild(hub);document.body.classList.add('hubOn');
 let HUBON=true,VIEW='park',ZG=1,ZS='a',PK=null,RACE=null;
 const H=s=>esc(s);
-function top(){return `<div class="hTop"><div class="hLogo"><img src="${HI.ferris2}" alt=""><span>DINO 數學遊樂園</span></div><div class="hNav"><button data-v="park" class="${VIEW==='park'||VIEW==='zone'||VIEW==='game'?'on':''}">🎠 遊樂園</button><button data-v="stats" class="${VIEW==='stats'?'on':''}">📊 能力分析</button><button data-v="comp" class="${VIEW==='comp'?'on':''}">🏆 競賽</button></div>${LG==='en'?`<button class="hChip" id="hTr">🌐 Translation: ${TR?'On':'Off'}</button>`:''}<button class="hChip" id="hLang" title="${LG==='en'?'切換到中文版':'Switch to English'}" onclick="location.href=LANG_SWITCH_URL">${LG==='en'?'🔁 中文':'🔁 English'}</button><button class="hChip" id="hMe">${me().av} ${H(me().name)} ▾</button></div>`;}
+function top(){return `<div class="hTop"><div class="hLogo"><img src="${HI.ferris2}" alt=""><span>DINO 數學遊樂園</span></div><div class="hNav"><button data-v="park" class="${VIEW==='park'||VIEW==='zone'||VIEW==='game'?'on':''}">🎠 遊樂園</button><button data-v="stats" class="${VIEW==='stats'?'on':''}">📊 能力分析</button><button data-v="comp" class="${VIEW==='comp'?'on':''}">🏆 競賽</button></div>${LG==='en'?`<button class="hChip" id="hTr">🌐 Translation: ${TR?'On':'Off'}</button>`:''}${FS_OK?`<button class="hChip" id="hFs" title="${fsTitle()}" aria-label="${fsTitle()}" onclick="toggleFS()">${fsLabel()}</button>`:''}<button class="hChip" id="hLang" title="${LG==='en'?'切換到中文版':'Switch to English'}" onclick="location.href=LANG_SWITCH_URL">${LG==='en'?'🔁 中文':'🔁 English'}</button><button class="hChip" id="hMe">${me().av} ${H(me().name)} ▾</button></div>`;}
 function show(v,arg){if(VIEW==='game'&&v!=='game'){stopGame();stopAll&&stopAll();}VIEW=v;if(v==='zone'&&arg)ZG=arg;
  {const gb=$('gameBox');if(gb&&hub.contains(gb))$('t-game').appendChild(gb);}
  const body=v==='park'?park():v==='zone'?zone():v==='stats'?stats():v==='comp'?comp():'';
